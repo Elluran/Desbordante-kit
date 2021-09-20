@@ -1,10 +1,8 @@
-install: install-Desbordante install-requirements 
-
-install-Desbordante:
-	git clone https://github.com/Mstrutov/Desbordante.git
-	cd Desbordante/; ./build.sh
-install-requirements:
-	python3 -m pip install -r requirements.txt 
-
+build:
+	docker image build -t desbordante-kit .
 run:
-	sudo python3 main.py
+	docker run -it --privileged \
+	--mount type=bind,source="/dev/mem",target="/dev/mem" \
+	--mount type=bind,source="$(PWD)/inputData",target="/app/inputData" \
+	--mount type=bind,source="$(PWD)/config.json",target="/app/config.json" \
+	desbordante-kit

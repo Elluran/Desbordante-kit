@@ -27,6 +27,7 @@ def get_cpu_model():
 
 
 def get_ram_freq():
+    
     freq = subprocess.check_output(['dmidecode', '--type=17']).decode('utf-8').split('\n')
     freq = list(filter(lambda x: re.search('Configured Memory Speed', x), freq))[0]
     return freq.split(':')[1].split()[0]

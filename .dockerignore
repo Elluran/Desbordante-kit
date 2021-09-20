@@ -1,0 +1,7 @@
+#ignore all
+*
+
+!app
+!Dockerfile
+!requirements.txt
+!config.json

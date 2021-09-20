@@ -3,3 +3,9 @@ lib/
 lib64/
 share/
 pyvenv.cfg
+.directory
+*.log
+*.pyc
+lib64
+logging.conf
+config.json

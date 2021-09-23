@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y \
     python3 python3-dev python3-pip git libboost-all-dev dmidecode cmake
 RUN git clone https://github.com/Mstrutov/Desbordante.git
 WORKDIR /app/Desbordante
-RUN ./build.sh
+RUN ./build.sh; rm -rv datasets build/target/inputData build/src/libfdtester_lib.a
 WORKDIR /
 COPY requirements.txt requirements.txt 
 RUN python3 -m pip install -r requirements.txt 

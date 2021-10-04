@@ -8,6 +8,7 @@ MEM_LIMIT = cfg["MEM_LIMIT"]
 TIME_LIMIT = cfg["TIME_LIMIT"]
 NUM_OF_MEASURES = cfg["NUM_OF_MEASURES"]
 algorithms = cfg["algorithms"]
+SKIP_IF_FAILED_ONCE = cfg["SKIP_IF_FAILED_ONCE"]
 
 # telegram bot
 bot_token = cfg["bot_token"]

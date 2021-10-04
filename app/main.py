@@ -60,6 +60,13 @@ def measure():
 
                 measures.append([algorithm, dataset, t])
 
+                if t:
+                    print(algorithm, dataset, f"time: {t / 1e9} sec")
+                else:
+                    print(algorithm, dataset, "TL or ML")
+                    if config.SKIP_IF_FAILED_ONCE:
+                        break
+
     return measures
 
 

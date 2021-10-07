@@ -100,9 +100,10 @@ def send_results(filename):
 
 
 
-def plot_graph(data, filename):
-    f, ax = plt.subplots(figsize=(12, 6.5))
+def plot_graph(data, filename):   
+    f, ax = plt.subplots(figsize=(12, 14))
     sns.swarmplot(x='dataset', y='time', hue='algo', data=data, ax=ax)
+    plt.xticks(rotation=45)
     plt.savefig(f'{filename}.png')
 
 if __name__ == "__main__":

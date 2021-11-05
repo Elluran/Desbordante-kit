@@ -14,6 +14,7 @@ import traceback
 import seaborn as sns
 import matplotlib.pyplot as plt
 
+
 def get_cpu_caches_sizes():
     tmp = subprocess.check_output(['lscpu']).decode('utf-8').split('\n')
     tmp = list(filter(lambda x: re.search('cache', x), tmp))[:4]
@@ -27,10 +28,20 @@ def get_cpu_model():
 
 
 def get_ram_freq():
-    
     freq = subprocess.check_output(['dmidecode', '--type=17']).decode('utf-8').split('\n')
     freq = list(filter(lambda x: re.search('Configured Memory Speed', x), freq))[0]
     return freq.split(':')[1].split()[0]
+
+
+def detect_separator(dataset):   
+    f = open("inputData/" + dataset)
+    first_str = f.read()
+    f.close()
+
+    sep = ','
+    if first_str.count(',') < first_str.count(';'):
+        sep = ';'
+    return sep
 
 
 def run_desbordante(algorithm, dataset):
@@ -39,7 +50,7 @@ def run_desbordante(algorithm, dataset):
         devnull = open(os.devnull, 'w')
 
         subprocess.check_output(['Desbordante/build/target/fdtester_run', 
-        '--algo=' + algorithm, '--data=' + dataset], timeout=config.TIME_LIMIT, stderr=devnull)
+        '--algo=' + algorithm, '--data=' + dataset, '--error=0', '--sep=' + detect_separator(dataset)], timeout=config.TIME_LIMIT, stderr=devnull)
 
         return time.time_ns() - start
     except subprocess.TimeoutExpired:
@@ -47,6 +58,8 @@ def run_desbordante(algorithm, dataset):
     except subprocess.CalledProcessError:
         # std::bad_alloc
         return None
+    except Exception as e:
+        print(e)
 
 
 def measure():
@@ -99,12 +112,12 @@ def send_results(filename):
         tg.send_document(user_id=user_id, filename=f'{filename}.png')
 
 
-
 def plot_graph(data, filename):   
     f, ax = plt.subplots(figsize=(12, 14))
     sns.swarmplot(x='dataset', y='time', hue='algo', data=data, ax=ax)
     plt.xticks(rotation=45)
     plt.savefig(f'{filename}.png')
+
 
 if __name__ == "__main__":
     try:

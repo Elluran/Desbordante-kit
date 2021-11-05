@@ -9,3 +9,4 @@ pyvenv.cfg
 lib64
 logging.conf
 config.json
+*.csv

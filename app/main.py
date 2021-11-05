@@ -49,7 +49,7 @@ def run_desbordante(algorithm, dataset):
         start = time.time_ns()
         devnull = open(os.devnull, 'w')
 
-        subprocess.check_output(['Desbordante/build/target/fdtester_run', 
+        subprocess.check_output(['Desbordante/build/target/Desbordante_run', 
         '--algo=' + algorithm, '--data=' + dataset, '--error=0', '--sep=' + detect_separator(dataset)], timeout=config.TIME_LIMIT, stderr=devnull)
 
         return time.time_ns() - start

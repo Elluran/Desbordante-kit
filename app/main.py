@@ -6,6 +6,7 @@ import platform
 import subprocess
 import time
 import os
+import sys
 import io
 import multiprocessing
 import re
@@ -28,15 +29,13 @@ def get_cpu_model():
 
 
 def get_ram_freq():
-    freq = subprocess.check_output(['dmidecode', '--type=17']).decode('utf-8').split('\n')
-    freq = list(filter(lambda x: re.search('Configured Memory Speed', x), freq))[0]
-    return freq.split(':')[1].split()[0]
+    freq = list(filter(lambda x: x.isdigit(), sys.argv[1].split()))
+    return freq[0]
 
 
 def detect_separator(dataset):   
-    f = open("inputData/" + dataset)
-    first_str = f.read()
-    f.close()
+    with open("inputData/" + dataset) as f:
+        first_str = f.readline()
 
     sep = ','
     if first_str.count(',') < first_str.count(';'):
@@ -53,11 +52,11 @@ def run_desbordante(algorithm, dataset):
         '--algo=' + algorithm, '--data=' + dataset, '--error=0', '--sep=' + detect_separator(dataset)], timeout=config.TIME_LIMIT, stderr=devnull)
 
         return time.time_ns() - start
-    except subprocess.TimeoutExpired:
-        return None
-    except subprocess.CalledProcessError:
-        # std::bad_alloc
-        return None
+    # except subprocess.TimeoutExpired:
+    #     return None
+    # except subprocess.CalledProcessError:
+    #     # std::bad_alloc
+    #     return None
     except Exception as e:
         print(e)
 
